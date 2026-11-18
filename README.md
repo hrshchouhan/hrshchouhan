@@ -1,16 +1,44 @@
-<h1 align="center">Hi 👋, I'm Harshvardhan Chouhan</h1>
-<h3 align="center">Computer Science | Core CS, AI</h3>
+<div align="center">
+  <img src="assets/header.svg" alt="Harshvardhan Chouhan: backend systems, data and open source" width="100%">
+</div>
 
-<p align="left"> <img src="https://komarev.com/ghpvc/?username=hrshchouhan&label=Profile%20views&color=0e75b6&style=flat" alt="hrshchouhan" /> </p>
+<br>
 
-- 🌱 I’m currently learning **core CS fundamentals and AI**
+<div align="center">
+  <img src="assets/terminal.svg" alt="whoami: Harshvardhan Chouhan, CSE undergrad. Backend in Java and Spring Boot, C++ and Python for the rest." width="100%">
+</div>
 
-- 📫 How to reach me **hrshvardhanchouhan@gmail.com**
+<br>
+<img src="assets/divider.svg" alt="" width="100%">
 
-<h3 align="left">Connect with me:</h3>
-<p align="left">
-</p>
+### Currently building
 
-<h3 align="left">Languages and Tools:</h3>
-<p align="left"> <a href="https://www.w3schools.com/cpp/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg" alt="cplusplus" width="40" height="40"/> </a> <a href="https://www.w3schools.com/css/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/> </a> <a href="https://www.w3.org/html/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/> </a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/> </a> <a href="https://www.python.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="40" height="40"/> </a> <a href="https://www.scala-lang.org" target="_blank" rel="noreferrer"> 
+| Project | What it is |
+| :-- | :-- |
+| [mcp-booking-server](https://github.com/hrshchouhan/mcp-booking-server) | Booking tools exposed over the Model Context Protocol. |
+| [opportunity-scanner](https://github.com/hrshchouhan/opportunity-scanner) | A nightly scanner that finds GitHub bounties and good-first-issue listings. Python. |
+| [Cataclysm-BN](https://github.com/hrshchouhan/Cataclysm-BN) | My fork, where I work on fixes to send upstream. C++. |
 
+<img src="assets/divider.svg" alt="" width="100%">
+
+### Tools and topics
+
+<div align="center">
+  <img src="assets/stack.svg" alt="Works in Java, Spring Boot, C++, C, Python, JavaScript, HTML and CSS, Git. Studying data structures and algorithms, operating systems, concurrency, system design, data analytics." width="100%">
+</div>
+
+<img src="assets/divider.svg" alt="" width="100%">
+
+### Contribution graph
+
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hrshchouhan/hrshchouhan/output/github-snake-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hrshchouhan/hrshchouhan/output/github-snake.svg">
+    <img alt="Contribution graph, eaten by a snake" src="https://raw.githubusercontent.com/hrshchouhan/hrshchouhan/output/github-snake-dark.svg" width="100%">
+  </picture>
+</div>
+
+<br>
+
+Open to freelance work and open source collaboration. Write to me at [hrshvardhanchouhan@gmail.com](mailto:hrshvardhanchouhan@gmail.com).
