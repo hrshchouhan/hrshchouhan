@@ -30,14 +30,10 @@
 <img src="assets/divider.svg" alt="" width="100%">
 
 ### Contribution graph
-
 <div align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hrshchouhan/hrshchouhan/output/github-snake-dark.svg">
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hrshchouhan/hrshchouhan/output/github-snake.svg">
-    <img alt="Contribution graph, eaten by a snake" src="https://raw.githubusercontent.com/hrshchouhan/hrshchouhan/output/github-snake-dark.svg" width="100%">
-  </picture>
+  <img src="./profile-3d-contrib/profile-night-view.svg" alt="3D skyline of my contributions" width="100%">
 </div>
+
 
 <br>
 
