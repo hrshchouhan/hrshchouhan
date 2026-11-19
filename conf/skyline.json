@@ -2,12 +2,12 @@
   {
     "type": "normal",
     "fileName": "skyline.svg",
-    "backgroundColor": "#0a0a0a",
-    "foregroundColor": "#f4f4f2",
-    "strongColor": "#5b73ff",
-    "weakColor": "#9a9a96",
-    "radarColor": "#5b73ff",
+    "backgroundColor": "#0f1412",
+    "foregroundColor": "#e9e6dc",
+    "strongColor": "#ff6b8b",
+    "weakColor": "#8a918b",
+    "radarColor": "#ff6b8b",
     "growingAnimation": true,
-    "contribColors": ["#1a1d26", "#2a3470", "#3a4ec0", "#5b73ff", "#9bacff"]
+    "contribColors": ["#1a211e", "#4a2a35", "#8f3a54", "#ff6b8b", "#ffc2d0"]
   }
 ]
