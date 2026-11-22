@@ -7,7 +7,7 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/notes-night.svg">
   <source media="(prefers-color-scheme: light)" srcset="assets/notes-day.svg">
-  <img alt="Now: backend in Java and Spring Boot. Side work: websites for cafes in Bir Billing. Open source: fixes for Cataclysm-BN." src="assets/notes-night.svg" width="100%">
+  <img alt="Now: backend in Java and Spring Boot. Freelance: made websites for local businesses and participated in Handshake AI x Google. Open source: fixes for Cataclysm-BN." src="assets/notes-night.svg" width="100%">
 </picture>
 
 <div align="center">

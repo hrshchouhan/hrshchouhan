@@ -10,7 +10,7 @@ OWNER = os.environ.get("GITHUB_REPOSITORY_OWNER", "hrshchouhan")
 TOKEN = os.environ.get("GITHUB_TOKEN")
 OFFLINE = os.environ.get("OFFLINE") == "1"
 PROJECTS = [("mcp-booking-server", "Java"), ("opportunity-scanner", "Python"), ("Cataclysm-BN", "C++")]
-PLACE = "SHIMLA   ·   2,205 M"   # edit or delete if you prefer not to show your town
+PLACE = "INDIA"
 ROSE, TEAL, VIOLET = "#ff6b8b", "#7fd6c2", "#8b7bff"
 FONTS = (ROOT / "scripts" / "fonts.css").read_text()
 BASE = (FONTS + ".n{font-family:'Inter Tight',Helvetica,Arial,sans-serif;font-weight:700}"
@@ -142,7 +142,7 @@ def hero(theme, data):
 def notes(theme):
     T = THEMES[theme]; W, H = 1000, 200
     cols = [("NOW", ["Third year of CS. Backend in Java", "and Spring Boot, plus data and AI."]),
-            ("SIDE WORK", ["Websites for cafés in Bir Billing,", "built remotely from Shimla."]),
+            ("FREELANCE", ["Made websites for local businesses.", "Handshake AI × Google participant."]),
             ("OPEN SOURCE", ["Sending fixes to Cataclysm-BN,", "an open source C++ roguelike."])]
     o = (f'<rect width="{W}" height="{H}" fill="{T["card"]}"/>' + blob(120, 200, 220, "rose", 50, -20, 30, .6 if theme == "night" else .3) + blob(900, 0, 220, "teal", -40, 30, 36, .5 if theme == "night" else .25, 7))
     for i, (lb, ls) in enumerate(cols):
@@ -151,7 +151,7 @@ def notes(theme):
         o += "".join(f'<text class="b" x="{x}" y="{100 + k * 28}" font-size="16" fill="{T["name"]}">{esc(t)}</text>' for k, t in enumerate(ls))
         if i: o += f'<path d="M{x - 24} 40V160" stroke="{T["line"]}" stroke-opacity=".12"/>'
     o += f'<rect x=".5" y=".5" width="{W - 1}" height="{H - 1}" rx="18" fill="none" stroke="{T["line"]}" stroke-opacity=".1"/>'
-    (A / f"notes-{theme}.svg").write_text(wrap(W, H, "Now: third year of CS, backend in Java and Spring Boot. Side work: websites for cafes in Bir Billing. Open source: fixes for Cataclysm-BN.", T, o))
+    (A / f"notes-{theme}.svg").write_text(wrap(W, H, "Now: third year of CS, backend in Java and Spring Boot. Freelance: made websites for local businesses and participated in Handshake AI x Google. Open source: fixes for Cataclysm-BN.", T, o))
 
 def button(fname, label, c1, c2):
     spin = '<animateTransform attributeName="gradientTransform" type="rotate" from="0 .5 .5" to="360 .5 .5" dur="8s" repeatCount="indefinite"/>'
