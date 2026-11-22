@@ -10,7 +10,7 @@ OWNER = os.environ.get("GITHUB_REPOSITORY_OWNER", "hrshchouhan")
 TOKEN = os.environ.get("GITHUB_TOKEN")
 OFFLINE = os.environ.get("OFFLINE") == "1"
 PROJECTS = [("mcp-booking-server", "Java"), ("opportunity-scanner", "Python"), ("Cataclysm-BN", "C++")]
-PLACE = "INDIA"
+PLACE = "INDIA"   # shown under your name; edit or delete
 ROSE, TEAL, VIOLET = "#ff6b8b", "#7fd6c2", "#8b7bff"
 FONTS = (ROOT / "scripts" / "fonts.css").read_text()
 BASE = (FONTS + ".n{font-family:'Inter Tight',Helvetica,Arial,sans-serif;font-weight:700}"
