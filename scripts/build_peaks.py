@@ -38,11 +38,11 @@ def get(url):
 def load():
     default = ([("Java", .34), ("C++", .28), ("Python", .18), ("JavaScript", .12)], 24, dict(PROJECTS))
     if OFFLINE: return default
-    sums = Counter()
+    w = Counter()
     for r in get(f"/users/{OWNER}/repos?per_page=100&type=owner") or []:
-        if not r.get("fork"): sums.update(get(r["languages_url"]) or {})
-    total = sum(sums.values())
-    langs = [(n, b / total) for n, b in sums.most_common(4)] if total else default[0]
+        if r.get("language"): w[r["language"]] += 0.5 if r.get("fork") else 1.0
+    total = sum(w.values())
+    langs = [(n, v / total) for n, v in w.most_common(4)] if total else default[0]
     since = datetime.now(timezone.utc) - timedelta(days=30); commits = 0
     for e in get(f"/users/{OWNER}/events/public?per_page=100") or []:
         if e.get("type") == "PushEvent" and datetime.fromisoformat(e["created_at"].replace("Z", "+00:00")) > since:
@@ -87,12 +87,12 @@ def peak(i, cx, top, base, T, name, pct):
             f'<text class="m" x="{cx}" y="{ly:.0f}" text-anchor="middle" font-size="18" fill="{T["lab"]}">{esc(name)}</text>'
             f'<text class="b" x="{cx}" y="{ly + 22:.0f}" text-anchor="middle" font-size="14" fill="{T["pct"]}">{pct}%</text>'), w
 
-def flag(x, y, label, col):
+def flag(x, y, label, col, left=False):
     up = 34
     p = lambda a, b: f"{x},{y - up} {x + a},{y - up + 6 + b} {x},{y - up + 12}"
     return (f'<path d="M{x} {y}V{y - up}" stroke="{col}" stroke-opacity=".85" stroke-width="1.6"/>'
             f'<polygon fill="{ROSE}" points="{p(22, 0)}"><animate attributeName="points" dur="2.6s" repeatCount="indefinite" values="{p(22, 0)};{p(19, 3)};{p(22, 0)}"/></polygon>'
-            f'<text class="m" x="{x + 30}" y="{y - up + 15}" font-size="11" fill="{col}" fill-opacity=".95">{esc(label)}</text>')
+            f'<text class="m" x="{x - 8 if left else x + 30}" y="{y - up + 15}" text-anchor="{"end" if left else "start"}" font-size="11" fill="{col}" fill-opacity=".95">{esc(label)}</text>')
 
 def hero(theme, data):
     T = THEMES[theme]; W, H, BASE = 1000, 600, 560
@@ -119,17 +119,18 @@ def hero(theme, data):
     POS = [650, 860, 420, 230]
     peaks = []
     for i, (n, s) in enumerate(langs[:4]):
-        peaks.append((i, n, s, POS[i], BASE - (80 + 470 * s)))
+        peaks.append((i, n, s, POS[i], BASE - (110 + 130 * s / langs[0][1])))
     other = max(0.0, 1 - sum(s for _, s in langs))
     marks, names = "", [n.lower() for n, _ in langs]
     for i, n, s, cx, top in sorted(peaks, key=lambda p: p[4], reverse=True):
         g, w = peak(i, cx, top, BASE, T, n, round(s * 100)); o += g
-    for k, (pn, pl) in enumerate(plang.items()):
+    cnt = {}
+    for pn, pl in plang.items():
         idx = next((i for i, (n, _) in enumerate(langs[:4]) if n.lower() == (pl or "").lower()), 0)
         _, _, _, cx, top = peaks[idx]
-        used = sum(1 for m in marks.split("<path") if m) - 0
-        marks += flag(cx, top, pn, T["name"]) if marks.count("<polygon") == 0 or idx != getattr(hero, "_last", -1) else flag(cx + 32, top + 34, pn, T["name"])
-        hero._last = idx
+        k = cnt.get(idx, 0); cnt[idx] = k + 1
+        dx = (0, 40, -40, 80, -80)[k]
+        marks += flag(cx + dx, top + abs(dx) / .95, pn, T["name"], dx < 0 or cx + dx > 760)
     o += marks + mist(540, 52)
     fr = [(x, 548 + 7 * math.sin(x / 70) + rnd.uniform(-3, 3)) for x in range(0, 1021, 20)]
     o += f'<path d="M0 600L' + "L".join(f"{x} {y:.0f}" for x, y in fr) + f'L1000 600Z" fill="{T["front"]}"/>'
