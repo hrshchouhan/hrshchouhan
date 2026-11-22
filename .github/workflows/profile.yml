@@ -21,8 +21,8 @@ jobs:
           USERNAME: ${{ github.repository_owner }}
           SETTING_JSON: conf/skyline.json
 
-      - name: Build projects card
-        run: python3 scripts/build_projects.py
+      - name: Build profile art
+        run: python3 scripts/build_peaks.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

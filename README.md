@@ -1,19 +1,20 @@
-<img src="assets/header.svg" alt="Harshvardhan Chouhan. Backend systems, data, open source." width="100%">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/hero-night.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/hero-day.svg">
+  <img alt="Harshvardhan Chouhan. AI, backend systems and data." src="assets/hero-night.svg" width="100%">
+</picture>
 
-<br>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/notes-night.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/notes-day.svg">
+  <img alt="Now: backend in Java and Spring Boot. Side work: websites for cafes in Bir Billing. Open source: fixes for Cataclysm-BN." src="assets/notes-night.svg" width="100%">
+</picture>
 
-<img src="assets/about.svg" alt="Building mcp-booking-server and opportunity-scanner. Works in Java, Spring Boot, C++, C, Python, JavaScript, HTML and CSS. Open to freelance projects and open source work." width="100%">
-
-<br>
-
-<img src="assets/projects.svg" alt="Projects: mcp-booking-server, opportunity-scanner, Cataclysm-BN." width="100%">
-
-[mcp-booking-server](https://github.com/hrshchouhan/mcp-booking-server), [opportunity-scanner](https://github.com/hrshchouhan/opportunity-scanner), [Cataclysm-BN](https://github.com/hrshchouhan/Cataclysm-BN)
+<div align="center">
+  <a href="https://github.com/hrshchouhan?tab=repositories"><img src="assets/btn-repos.svg" alt="Repositories" height="56"></a>
+  <a href="mailto:hrshvardhanchouhan@gmail.com"><img src="assets/btn-email.svg" alt="Email me" height="56"></a>
+</div>
 
 <br>
 
 <img src="./profile-3d-contrib/skyline.svg" alt="3D skyline of my contributions" width="100%">
-
-<br>
-
-Write to me at [hrshvardhanchouhan@gmail.com](mailto:hrshvardhanchouhan@gmail.com).
