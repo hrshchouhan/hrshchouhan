@@ -1,4 +1,4 @@
-"""Builds the Himalayan profile: peaks are languages, flags are projects, stars are commits."""
+"""Builds the sky-lantern profile: lanterns are languages, tags are projects, stars are commits."""
 import json, math, os, random, urllib.request
 from collections import Counter
 from datetime import datetime, timedelta, timezone
@@ -18,10 +18,10 @@ BASE = (FONTS + ".n{font-family:'Inter Tight',Helvetica,Arial,sans-serif;font-we
 THEMES = {
     "night": dict(sky=("#05080f", "#0e1a24", "#2b1b27"), name="#f2efe8", mut="#9aa6a8", orb="#f2efe8", back2="#0c141b", back="#101b23",
                   mid="#18262e", snow="#dfe7e4", snow_op=.55, shade=.28, front="#070b0e", mist="#9fb4b8", mist_op=.08,
-                  lab="#e3ebe8", pct="#93a5a7", cap="#7f8d8f", card="#0d1113", line="#ffffff", stars=True, aur=.9),
+                  lab="#e3ebe8", pct="#93a5a7", cap="#7f8d8f", card="#0d1113", line="#ffffff", stars=True, aur=.9, lop=.8),
     "day": dict(sky=("#a9cfe2", "#e9dfd4", "#ffd0bb"), name="#14202a", mut="#4a5d66", orb="#fff1c4", back2="#c3d6df", back="#a5bfcb",
                 mid="#6f8d9a", snow="#ffffff", snow_op=.95, shade=.16, front="#1f2f38", mist="#ffffff", mist_op=.4,
-                lab="#ffffff", pct="#e3eef2", cap="#dbe6ea", card="#f3efe9", line="#000000", stars=False, aur=.35),
+                lab="#ffffff", pct="#e3eef2", cap="#dbe6ea", card="#f3efe9", line="#000000", stars=False, aur=.35, lop=.5),
 }
 
 def esc(s): return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
@@ -94,51 +94,61 @@ def flag(x, y, label, col, left=False):
             f'<polygon fill="{ROSE}" points="{p(22, 0)}"><animate attributeName="points" dur="2.6s" repeatCount="indefinite" values="{p(22, 0)};{p(19, 3)};{p(22, 0)}"/></polygon>'
             f'<text class="m" x="{x - 8 if left else x + 30}" y="{y - up + 15}" text-anchor="{"end" if left else "start"}" font-size="11" fill="{col}" fill-opacity=".95">{esc(label)}</text>')
 
+COLS = ["#ff9a5c", "#ffd88a", "#ff6b8b", "#ffb86b"]
+SLOTS = [(690, 400), (890, 290), (470, 470), (260, 490)]
+
+def lantern(i, cx, cy, bh, col, name, pct, projects, T):
+    bw = bh * .85; gid = f"lg{i}"
+    g = f'<radialGradient id="{gid}"><stop offset="0" stop-color="{col}" stop-opacity="{T["lop"]}"/><stop offset="1" stop-color="{col}" stop-opacity="0"/></radialGradient>'
+    o = (f'<circle class="fl" style="animation-delay:{-i * .7:.1f}s" cx="{cx}" cy="{cy}" r="{bh * 1.3:.0f}" fill="url(#{gid})"/>'
+         f'<rect x="{cx - bw * .2:.1f}" y="{cy - bh / 2 - 8:.1f}" width="{bw * .4:.1f}" height="10" rx="3" fill="{col}"/>'
+         f'<rect x="{cx - bw / 2:.1f}" y="{cy - bh / 2:.1f}" width="{bw:.1f}" height="{bh:.1f}" rx="{bw * .28:.1f}" fill="{col}"/>'
+         f'<rect x="{cx - bw * .36:.1f}" y="{cy - bh * .38:.1f}" width="{bw * .72:.1f}" height="{bh * .76:.1f}" rx="{bw * .2:.1f}" fill="#fff4dc" fill-opacity=".8"/>'
+         f'<path d="M{cx - bw * .12:.1f} {cy - bh * .38:.1f}V{cy + bh * .38:.1f}M{cx + bw * .12:.1f} {cy - bh * .38:.1f}V{cy + bh * .38:.1f}" stroke="{col}" stroke-opacity=".55" stroke-width="1.4"/>'
+         f'<rect x="{cx - bw * .2:.1f}" y="{cy + bh / 2 - 2:.1f}" width="{bw * .4:.1f}" height="7" rx="3" fill="{col}"/>'
+         f'<text class="m" x="{cx}" y="{cy - bh / 2 - 36:.0f}" text-anchor="middle" font-size="18" fill="{T["name"]}">{esc(name)}</text>'
+         f'<text class="b" x="{cx}" y="{cy - bh / 2 - 16:.0f}" text-anchor="middle" font-size="14" fill="{T["mut"]}">{pct}%</text>')
+    if projects:
+        last = cy + bh / 2 + 16 + (len(projects) - 1) * 28
+        tg = f'<path d="M{cx} {cy + bh / 2 + 5:.1f}V{last:.1f}" stroke="{col}" stroke-opacity=".8" stroke-width="1.2"/>'
+        for k, pn in enumerate(projects):
+            tw = len(pn) * 6.4 + 22; ty = cy + bh / 2 + 16 + k * 28
+            tg += (f'<rect x="{cx - tw / 2:.1f}" y="{ty:.1f}" width="{tw:.1f}" height="21" rx="6" fill="{ROSE}"/>'
+                   f'<text class="m" x="{cx}" y="{ty + 14.5:.1f}" text-anchor="middle" font-size="11" fill="#0d1113">{esc(pn)}</text>')
+        o += f'<g class="sw" style="animation-delay:{-i * .9:.1f}s">{tg}</g>'
+    return f'<defs>{g}</defs><g class="bob" style="animation-duration:{5.4 + i * .8:.1f}s;animation-delay:{-i * 1.4:.1f}s">{o}</g>'
+
 def hero(theme, data):
-    T = THEMES[theme]; W, H, BASE = 1000, 600, 560
+    T = THEMES[theme]; W, H = 1000, 600
     langs, commits, plang = data; rnd = random.Random(7)
     o = f'<rect width="{W}" height="{H}" fill="url(#sky)"/>'
     o += (blob(820, 190, 300, "rose", -70, 30, 30, T["aur"]) + blob(300, 120, 260, "teal", 80, 20, 36, T["aur"], 9) + blob(560, 50, 240, "violet", -50, 40, 42, T["aur"], 17))
     if T["stars"]:
         for k in range(min(120, 40 + commits * 2)):
-            x, y, r = rnd.uniform(8, 992), rnd.uniform(8, 330), rnd.uniform(.6, 1.5); op = rnd.uniform(.35, .9)
-            tw = (f'<animate attributeName="opacity" dur="{rnd.uniform(3, 7):.1f}s" begin="-{rnd.uniform(0, 6):.1f}s" repeatCount="indefinite" values="{op:.2f};{op * .25:.2f};{op:.2f}"/>' if k % 3 == 0 else "")
-            o += f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{r:.1f}" fill="#fff" opacity="{op:.2f}">{tw}</circle>'
+            x, y, r = rnd.uniform(8, 992), rnd.uniform(8, 400), rnd.uniform(.7, 1.6)
+            st = f'style="animation-duration:{rnd.uniform(2.2, 5.5):.1f}s;animation-delay:-{rnd.uniform(0, 6):.1f}s"'
+            spark = f'<path d="M{x - 5:.0f} {y:.0f}H{x + 5:.0f}M{x:.0f} {y - 5:.0f}V{y + 5:.0f}" stroke="#fff" stroke-width=".8" stroke-linecap="round"/>' if k % 9 == 0 else ""
+            o += f'<g class="s" {st}><circle cx="{x:.0f}" cy="{y:.0f}" r="{r * 3.4:.1f}" fill="#fff" opacity=".16"/><circle cx="{x:.0f}" cy="{y:.0f}" r="{r:.1f}" fill="#fff"/>{spark}</g>'
     else:
-        for cx, cy, s, dur in ((200, 120, 1.0, 60), (620, 90, .8, 80), (880, 210, 1.2, 70)):
-            o += (f'<g opacity=".7"><ellipse cx="{cx}" cy="{cy}" rx="{70 * s}" ry="{14 * s}" fill="#fff"/><ellipse cx="{cx + 40 * s}" cy="{cy - 8 * s}" rx="{44 * s}" ry="{12 * s}" fill="#fff"/>'
+        for cx, cy, sc, dur in ((200, 120, 1.0, 60), (620, 90, .8, 80), (760, 150, 1.0, 70)):
+            o += (f'<g opacity=".7"><ellipse cx="{cx}" cy="{cy}" rx="{70 * sc}" ry="{14 * sc}" fill="#fff"/><ellipse cx="{cx + 40 * sc}" cy="{cy - 8 * sc}" rx="{44 * sc}" ry="{12 * sc}" fill="#fff"/>'
                   f'<animateTransform attributeName="transform" type="translate" values="-30 0;30 0;-30 0" dur="{dur}s" repeatCount="indefinite"/></g>')
-    o += f'<circle cx="880" cy="100" r="84" fill="url(#orb)"/><circle cx="880" cy="100" r="22" fill="{T["orb"]}" fill-opacity=".92"/>'
+    o += (f'<g class="mg"><circle cx="880" cy="100" r="124" fill="url(#orb)"/></g><g class="mg2"><circle cx="880" cy="100" r="58" fill="url(#orb)"/></g>'
+          f'<circle cx="880" cy="100" r="24" fill="{T["orb"]}"/><circle cx="872" cy="94" r="5" fill="#000" fill-opacity=".07"/><circle cx="889" cy="108" r="3.5" fill="#000" fill-opacity=".07"/>')
     o += (f'<text class="n" x="52" y="170" font-size="92" letter-spacing="-3" fill="{T["name"]}">Harshvardhan</text>'
           f'<text class="n" x="52" y="262" font-size="92" letter-spacing="-3" fill="{T["name"]}">Chouhan</text>'
           f'<text class="m" x="56" y="306" font-size="13" letter-spacing="6" fill="{T["mut"]}">AI   ·   BACKEND SYSTEMS   ·   DATA</text>'
           + (f'<text class="m" x="56" y="334" font-size="13" letter-spacing="6" fill="{T["mut"]}">{PLACE}</text>' if PLACE else ""))
-    o += ridge(rnd, BASE, 410, 480, 38, T["back2"]) + ridge(rnd, BASE, 450, 505, 30, T["back"])
-    mist = lambda y, dur: f'<ellipse cx="500" cy="{y}" rx="720" ry="34" fill="{T["mist"]}" opacity="{T["mist_op"]}"><animateTransform attributeName="transform" type="translate" values="-110 0;110 0;-110 0" dur="{dur}s" repeatCount="indefinite"/></ellipse>'
-    o += mist(505, 44)
-    POS = [650, 860, 420, 230]
-    peaks = []
-    for i, (n, s) in enumerate(langs[:4]):
-        peaks.append((i, n, s, POS[i], BASE - (110 + 130 * s / langs[0][1])))
-    other = max(0.0, 1 - sum(s for _, s in langs))
-    marks, names = "", [n.lower() for n, _ in langs]
-    for i, n, s, cx, top in sorted(peaks, key=lambda p: p[4], reverse=True):
-        g, w = peak(i, cx, top, BASE, T, n, round(s * 100)); o += g
-    cnt = {}
+    tags = {}
     for pn, pl in plang.items():
         idx = next((i for i, (n, _) in enumerate(langs[:4]) if n.lower() == (pl or "").lower()), 0)
-        _, _, _, cx, top = peaks[idx]
-        k = cnt.get(idx, 0); cnt[idx] = k + 1
-        dx = (0, 40, -40, 80, -80)[k]
-        marks += flag(cx + dx, top + abs(dx) / .95, pn, T["name"], dx < 0 or cx + dx > 760)
-    o += marks + mist(540, 52)
-    fr = [(x, 548 + 7 * math.sin(x / 70) + rnd.uniform(-3, 3)) for x in range(0, 1021, 20)]
-    o += f'<path d="M0 600L' + "L".join(f"{x} {y:.0f}" for x, y in fr) + f'L1000 600Z" fill="{T["front"]}"/>'
-    for x in range(6, 1000, 12):
-        x += rnd.uniform(-4, 4); y = 548 + 7 * math.sin(x / 70) + 2; hh = rnd.uniform(20, 42)
-        o += f'<polygon points="{x - 6:.0f},{y:.0f} {x:.0f},{y - hh:.0f} {x + 6:.0f},{y:.0f}" fill="{T["front"]}"/>'
-    o += f'<text class="b" x="44" y="{H - 22}" font-size="12" fill="{T["cap"]}">peaks are languages, flags are projects, stars are commits   ·   {commits} commits in the last 30 days</text>'
-    (A / f"hero-{theme}.svg").write_text(wrap(W, H, "Harshvardhan Chouhan. AI, backend systems and data. A Himalayan landscape where peaks are languages, flags are projects and stars are commits.", T, o))
+        tags.setdefault(idx, []).append(pn)
+    maxs = langs[0][1]
+    for i, (n, s) in enumerate(langs[:4]):
+        cx, cy = SLOTS[i]
+        o += lantern(i, cx, cy, 70 + 50 * s / maxs, COLS[i], n, round(s * 100), tags.get(i, []), T)
+    o += f'<text class="b" x="44" y="{H - 20}" font-size="12" fill="{T["mut"]}">lanterns are languages, tags are projects, stars are commits   ·   {commits} commits in the last 30 days</text>'
+    (A / f"hero-{theme}.svg").write_text(wrap(W, H, "Harshvardhan Chouhan. AI, backend systems and data. Glowing sky lanterns where each lantern is a language, tags are projects and stars are commits.", T, o))
 
 def notes(theme):
     T = THEMES[theme]; W, H = 1000, 200
